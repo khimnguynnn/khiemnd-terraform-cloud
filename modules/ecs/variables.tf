@@ -31,3 +31,9 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+output "private_key_pem" {
+  description = "Private key for SSH access to EC2 instances"
+  value       = tls_private_key.this.private_key_pem
+  sensitive   = true
+}
