@@ -1,7 +1,7 @@
 resource "aws_vpc" "main" {
-  cidr_block = "10.222.0.0/16"
+  cidr_block = var.cidr_block
 
-  tags = {
-    Name = "core-banking-vpc"
-  }
+  tags = merge(var.common_tags, {
+    Name = "${var.common_tags["Environment"]}-${var.common_tags["Project"]}-vpc"
+  })
 }
