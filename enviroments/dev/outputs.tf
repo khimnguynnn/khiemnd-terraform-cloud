@@ -6,4 +6,5 @@ output "network" {
 output "ec2_private_key" {
   description = "The private IP addresses of the ECS instances"
   value       = module.ecs.private_key_pem
+  sensitive   = true
 }
