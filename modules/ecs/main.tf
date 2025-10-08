@@ -91,21 +91,37 @@ data "template_file" "ecs_user_data" {
   }
 }
 
-resource "aws_launch_configuration" "ecs_lt" {
-  name_prefix                 = "${var.tags["Environment"]}-${var.tags["Project"]}-ecs-lc-"
-  image_id                    = var.ecs_ami
-  instance_type               = var.ecs_instance_type
-  associate_public_ip_address = false
-  key_name                    = aws_key_pair.this.key_name
-  iam_instance_profile        = aws_iam_instance_profile.ecs_instance_profile.name
-  security_groups             = [aws_security_group.ecs_sg.id]
-  user_data                   = base64encode(data.template_file.ecs_user_data.rendered)
+resource "aws_launch_template" "ecs_lt" {
+  name_prefix   = "${var.tags["Environment"]}-${var.tags["Project"]}-ecs-lt-"
+  image_id      = var.ecs_ami
+  instance_type = var.ecs_instance_type
+  key_name      = aws_key_pair.this.key_name
+
+  iam_instance_profile {
+    name = aws_iam_instance_profile.ecs_instance_profile.name
+  }
+
+  network_interfaces {
+    associate_public_ip_address = false
+    security_groups             = [aws_security_group.ecs_sg.id]
+  }
+
+  user_data = base64encode(
+    templatefile("${path.module}/ecs_user_data.sh", {
+      cluster_name = aws_ecs_cluster.main.name
+    })
+  )
+
+  tag_specifications {
+    resource_type = "instance"
+    tags          = var.tags
+  }
 
   lifecycle {
     create_before_destroy = true
   }
-
 }
+
 
 resource "aws_autoscaling_group" "ecs_asg" {
   desired_capacity          = 1
