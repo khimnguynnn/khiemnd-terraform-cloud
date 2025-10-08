@@ -1,6 +1,6 @@
 output "network" {
   description = "The VPC ID where the ECS instances are deployed"
-  value       = module.ecs.network_ids
+  value       = module.vpc.network_ids
 }
 
 output "ec2_private_key" {
