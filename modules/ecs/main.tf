@@ -128,7 +128,7 @@ resource "aws_autoscaling_group" "ecs_asg" {
   max_size                  = 2
   min_size                  = 2
   vpc_zone_identifier       = var.private_subnet_cidrs
-  launch_configuration      = aws_launch_configuration.ecs_lt.name
+  launch_configuration      = aws_launch_template.ecs_lt.name
   health_check_type         = "EC2"
   health_check_grace_period = 300
   force_delete              = true
