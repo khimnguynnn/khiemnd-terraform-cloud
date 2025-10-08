@@ -70,13 +70,13 @@ resource "aws_internet_gateway" "public" {
 }
 
 resource "aws_eip" "nat_eip" {
-  count      = length(var.public_subnet_cidrs)
+  count      = length(var.private_subnet_cidrs)
   depends_on = [aws_internet_gateway.public]
   
 }
 
 resource "aws_nat_gateway" "nat_gw" {
-  count         = length(var.public_subnet_cidrs)
+  count         = length(var.private_subnet_cidrs)
   allocation_id = aws_eip.nat_eip[count.index].id
   subnet_id     = aws_subnet.public[count.index].id
 
