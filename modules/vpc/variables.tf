@@ -3,7 +3,7 @@ variable "cidr_block" {
   type        = string
 }
 
-variable "common_tags" {
+variable "tags" {
   description = "A map of common tags to apply to all resources."
   type        = map(string)
 }

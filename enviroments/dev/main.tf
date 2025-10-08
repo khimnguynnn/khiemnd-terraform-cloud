@@ -1,5 +1,4 @@
 locals {
-  git_repo = "git::https://github.com/khimnguynnn/khiemnd-terraform-cloud.git"
   common_tags = {
     Owner       = "khiemnd"
     Environment = "dev"
@@ -10,5 +9,8 @@ locals {
 
 
 module "vpc" {
-  source = "${local.git_repo}//modules/vpc"
+  source = "git::https://github.com/khimnguynnn/khiemnd-terraform-cloud.git//modules/vpc"
+
+  cidr_block = var.cidr_block
+  tags       = local.common_tags
 }
