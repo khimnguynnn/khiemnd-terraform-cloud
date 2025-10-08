@@ -1,10 +1,10 @@
 resource "aws_ecs_cluster" "main" {
-  name = "${var.tags["Enviroment"]}-${var.tags["Project"]}-cluster"
+  name = "${var.tags["Environment"]}-${var.tags["Project"]}-cluster"
 
   tags = merge(
     var.tags,
     {
-      Name = "${var.tags["Enviroment"]}-${var.tags["Project"]}-cluster"
+      Name = "${var.tags["Environment"]}-${var.tags["Project"]}-cluster"
     },
   )
 }
