@@ -23,5 +23,7 @@ module "vpc" {
 module "ecs" {
   source = "git::https://github.com/khimnguynnn/khiemnd-terraform-cloud.git//modules/ecs"
 
-  tags = local.common_tags
+  vpc_id               = module.vpc.network_ids["vpc_id"]
+  private_subnet_cidrs = module.vpc.network_ids["private_subnet_ids"]
+  tags                 = local.common_tags
 }

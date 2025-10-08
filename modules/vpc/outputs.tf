@@ -1,4 +1,4 @@
-output "network_id" {
+output "network_ids" {
   value = {
     vpc_id                  = aws_vpc.main.id
     public_subnet_ids       = aws_subnet.public[*].id
@@ -8,5 +8,4 @@ output "network_id" {
     igw_id                  = aws_internet_gateway.public.id
     nat_gateway_ids         = aws_nat_gateway.nat_gw[*].id
   }
-
 }
