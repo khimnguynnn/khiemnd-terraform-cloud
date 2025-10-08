@@ -9,6 +9,24 @@ resource "aws_ecs_cluster" "main" {
   )
 }
 
+resource "aws_ecs_capacity_provider" "asg_capacity_provider" {
+  name = "${var.tags["Environment"]}-${var.tags["Project"]}-ecs-capacity-provider"
+
+  auto_scaling_group_provider {
+    auto_scaling_group_arn         = aws_autoscaling_group.ecs_asg.arn
+    managed_termination_protection = "ENABLED"
+
+    managed_scaling {
+      status                    = "ENABLED"
+      target_capacity           = 100
+      minimum_scaling_step_size = 1
+      maximum_scaling_step_size = 2
+    }
+  }
+
+  tags = var.tags
+}
+
 resource "tls_private_key" "this" {
   algorithm = "RSA"
   rsa_bits  = 4096
