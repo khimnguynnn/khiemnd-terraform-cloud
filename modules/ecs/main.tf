@@ -14,7 +14,7 @@ resource "aws_ecs_capacity_provider" "asg_capacity_provider" {
 
   auto_scaling_group_provider {
     auto_scaling_group_arn         = aws_autoscaling_group.ecs_asg.arn
-    managed_termination_protection = "ENABLED"
+    managed_termination_protection = "DISABLED"
 
     managed_scaling {
       status                    = "ENABLED"
@@ -23,8 +23,21 @@ resource "aws_ecs_capacity_provider" "asg_capacity_provider" {
       maximum_scaling_step_size = 2
     }
   }
-
   tags = var.tags
+}
+
+resource "aws_ecs_cluster_capacity_providers" "main" {
+  cluster_name = aws_ecs_cluster.main.name
+
+  capacity_providers = [
+    aws_ecs_capacity_provider.asg_capacity_provider.name
+  ]
+
+  default_capacity_provider_strategy {
+    capacity_provider = aws_ecs_capacity_provider.asg_capacity_provider.name
+    weight            = 1
+    base              = 1
+  }
 }
 
 resource "tls_private_key" "this" {
