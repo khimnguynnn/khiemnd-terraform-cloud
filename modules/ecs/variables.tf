@@ -11,7 +11,7 @@ variable "vpc_id" {
 
 variable "allowed_ports" {
   description = "A list of allowed ports for the ECS instances"
-  type        = list(number)
+  type        = list(string)
   default     = ["22", "80", "443"]
 }
 
