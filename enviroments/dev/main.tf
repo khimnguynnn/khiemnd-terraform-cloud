@@ -19,3 +19,9 @@ module "vpc" {
   availability_zones   = data.aws_availability_zones.available.names
   tags                 = local.common_tags
 }
+
+module "ecs" {
+  source = "git::https://github.com/khimnguynnn/khiemnd-terraform-cloud.git//modules/ecs"
+
+  tags = local.common_tags
+}
