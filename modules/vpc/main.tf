@@ -69,6 +69,12 @@ resource "aws_internet_gateway" "public" {
   depends_on = [aws_vpc.main]
 }
 
+resource "aws_eip" "nat_eip" {
+  count      = length(var.public_subnet_cidrs)
+  depends_on = [aws_internet_gateway.public]
+  
+}
+
 resource "aws_nat_gateway" "nat_gw" {
   count         = length(var.public_subnet_cidrs)
   allocation_id = aws_eip.nat_eip[count.index].id
@@ -77,7 +83,7 @@ resource "aws_nat_gateway" "nat_gw" {
   tags = merge(var.tags, {
     Name = "${var.tags["Environment"]}-${var.tags["Project"]}-nat-gw-${count.index + 1}"
   })
-  depends_on = [aws_internet_gateway.public]
+  depends_on = [aws_internet_gateway.public, aws_eip.nat_eip]
 }
 
 resource "aws_route_table_association" "public" {
