@@ -1,3 +1,3 @@
 module "vpc" {
-  source = "https://github.com/khimnguynnn/khiemnd-terraform-cloud.git//modules/vpc"
+  source = "git::https://github.com/khimnguynnn/khiemnd-terraform-cloud.git//modules/vpc"
 }
